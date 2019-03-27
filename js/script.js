@@ -52,7 +52,7 @@ const validations = [
       Card Number:
       */
       id: 'cc-num',
-      regExp: /^\d{4}[\-]\d{4}[\-]\d{4}[\-]\d{4}$/,
+      regExp: /^\d{13,16}$/,
       error_message: 'Please enter a valid card nunber!',
       mode: "credit-card-section",
    },
