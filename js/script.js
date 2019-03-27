@@ -405,9 +405,10 @@ $('button[type="submit"]').on("click", function(e) {
    let inputs = ['mail', 'cc-num', 'zip', 'cvv'];
    for (let i = 0; i < inputs.length; i++) {
       display_or_remove_error_message(inputs[i]);
+      e.preventDefault();
    }
 
-   e.preventDefault();
+   //e.preventDefault();
 
 });
 
