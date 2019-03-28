@@ -4,6 +4,8 @@ Team Treehouse: JavaScript Full Stack Techdegree
 Project 3: Interactive Form
 **************************************/
 
+let costs = 0;
+
 // initially hidden
 $other_job_role = $('input#other-title');
 
@@ -196,12 +198,14 @@ $('select#design').on('change', function() {
    switch ( $('#design option:selected').val() ) {
       case 'js puns':
          selected_shirt_theme = 'js puns';
+         $('.shirt legend').children('.error_msg_one').text("");
          // the first 3 colors will display
          update_available_shirt_colors(/JS Puns shirt only/);
          $('#colors-js-puns').show();
          break;
       case 'heart js':
          selected_shirt_theme = 'heart js';
+         $('.shirt legend').children('.error_msg_one').text("");
          // the last 3 colors will display
          update_available_shirt_colors(/JS shirt only/);
          $('#colors-js-puns').show();
@@ -216,8 +220,44 @@ $('select#design').on('change', function() {
          $('#colors-js-puns').show();
    }
 });
+// start here
+function checkbox_isChecked(cost, array) {
+   let located_object_cost = cost;
+   let inputs_to_change = array;
 
-let costs = 0;
+   costs += located_object_cost;
+   let replacement = `Total: $${String(costs)}`;
+   $('div.total_cost').text(replacement);
+
+   $('.activities input[type="checkbox"]').each(function() {
+      for (let i = 0; i < inputs_to_change.length; i++) {
+         if ($(this).attr("name") === inputs_to_change[i]) {
+            $(this).prop('disabled', true);
+            // 'isDisabled' class is added in style.css
+            $(this).parent().addClass('isDisabled');
+         }
+      }
+   });
+} // end of entire function
+
+function checkbox_unChecked(cost, array) {
+   let located_object_cost = cost;
+   let inputs_to_change = array;
+
+   costs -= located_object_cost; // substract from costs
+   let replacement = `Total: $${String(costs)}`;
+   $('div.total_cost').text(replacement);
+
+   $('.activities input[type="checkbox"]').each(function() {
+      for (let i = 0; i < inputs_to_change.length; i++) {
+         if ($(this).attr("name") === inputs_to_change[i]) {
+            $(this).prop('disabled', false);
+            $(this).parent().removeClass('isDisabled');
+         }
+      }
+   });
+}
+
 /*
 When a user selects or unselects an activity, the "Total" amount is reflected
 at the bottom of the activities list. Conflicting activities will be crossed out.
@@ -227,9 +267,7 @@ $('.activities input[type="checkbox"]').on("change", function() {
 
    const $self = $(this).attr("name");
    let the_object = all_activities.find(x => x.name === $self);
-
    let located_object_name = the_object.name;
-   console.log(located_object_name);
    let located_object_timeslot = the_object.timeslot;
    let located_object_cost = the_object.cost;
    /*
@@ -241,35 +279,19 @@ $('.activities input[type="checkbox"]').on("change", function() {
       inputs_to_change.push(picked_input.name);
    }
 
-   // if the checkbox is "checked"
    if ($(this).is(':checked')) {
-      costs += located_object_cost; // add to the costs
-      let replacement = `Total: $${String(costs)}`;
-      $('div.total_cost').text(replacement);
-      $('.activities input[type="checkbox"]').each(function() {
-         for (let i = 0; i < inputs_to_change.length; i++) {
-            if ($(this).attr("name") === inputs_to_change[i]) {
-               $(this).prop('disabled', true);
-               // 'isDisabled' class is added in style.css
-               $(this).parent().addClass('isDisabled');
-            }
-         }
-      });
+      $('.activities legend').children('span').text("");
+      /* Total cost will be updated, and activities with conflicting timeslots
+       will be disabled (or crossed out). */
+      checkbox_isChecked(located_object_cost, inputs_to_change);
    }
-   // if the checkbox is "unchecked"
+
    if (!$(this).is(':checked')) {
-      costs -= located_object_cost; // substract from costs
-      let replacement = `Total: $${String(costs)}`;
-      $('div.total_cost').text(replacement);
-      $('.activities input[type="checkbox"]').each(function() {
-         for (let i = 0; i < inputs_to_change.length; i++) {
-            if ($(this).attr("name") === inputs_to_change[i]) {
-               $(this).prop('disabled', false);
-               $(this).parent().removeClass('isDisabled');
-            }
-         }
-      });
+      /* Total cost will be updated, and activities that are no longer
+      conflicting with other activities will be enabled. */
+      checkbox_unChecked(located_object_cost, inputs_to_change);
    }
+
 });
 
 
@@ -407,8 +429,6 @@ $('button[type="submit"]').on("click", function(e) {
       display_or_remove_error_message(inputs[i]);
       e.preventDefault();
    }
-
-   //e.preventDefault();
 
 });
 
