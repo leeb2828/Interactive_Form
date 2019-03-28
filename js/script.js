@@ -80,6 +80,7 @@ const validations = [
    }
 ]
 
+
 /*
 "Register for Activities" section
 */
@@ -92,6 +93,7 @@ const all_activities = [
    {name: "build-tools", timeslot: 3, cost: 100}, // Wednesday 9-12PM
    {name: "npm", timeslot: 4, cost: 100}, // Wednesday 1-4PM
 ]
+
 
 /*
 when the user selects a payment option for
@@ -123,6 +125,7 @@ function payment_info_section() {
    }
 }
 
+
 /*
 When the user selects "Other" from the "Job Role" dropdown menu,
 a new text box will appear.
@@ -140,6 +143,7 @@ $('select#title').on('change', function() {
    }
 });
 
+
 /*
 When the user selects a new payment option under the "Payment Info" section,
 the information below gets updated by calling payment_info_section() method.
@@ -149,6 +153,7 @@ and the credit card and paypal information will be hidden.
 $('#payment').on('change', function() {
    payment_info_section();
 });
+
 
 /*
 Determine which colors get displayed in the "Color" Dropdown menu
@@ -182,6 +187,7 @@ function update_available_shirt_colors(regExp) {
       }
    }
 }
+
 
 /*
 For the "Design" dropdown menu
@@ -220,7 +226,8 @@ $('select#design').on('change', function() {
          $('#colors-js-puns').show();
    }
 });
-// start here
+
+
 function checkbox_isChecked(cost, array) {
    let located_object_cost = cost;
    let inputs_to_change = array;
@@ -240,11 +247,12 @@ function checkbox_isChecked(cost, array) {
    });
 } // end of entire function
 
+
 function checkbox_unChecked(cost, array) {
    let located_object_cost = cost;
    let inputs_to_change = array;
 
-   costs -= located_object_cost; // substract from costs
+   costs -= located_object_cost;
    let replacement = `Total: $${String(costs)}`;
    $('div.total_cost').text(replacement);
 
@@ -257,6 +265,7 @@ function checkbox_unChecked(cost, array) {
       }
    });
 }
+
 
 /*
 When a user selects or unselects an activity, the "Total" amount is reflected
@@ -313,6 +322,7 @@ $('input[type="text"], input[type="email"]').on("focus", function() {
 
 });
 
+
 /*
    Add <span> elements:
    - To the <label> tags right before the <input> tags for "Name" and "Email".
@@ -333,6 +343,7 @@ function add_the_span_elements() {
       }
    }
 }
+
 
 function set_initial_settings() {
    // set focus on the first text field
@@ -357,6 +368,7 @@ function set_initial_settings() {
 
    payment_info_section();
 }
+
 
 /*
 Takes in the id (such as 'mail' or 'zip') as a parameter, and uses it to
@@ -399,6 +411,7 @@ function display_or_remove_error_message(parameter_name) {
    }
 
 }
+
 
 /*
 When the user clicks the "Register" button
