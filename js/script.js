@@ -1,10 +1,11 @@
-/**************************************
+ /**************************************
 Lee Haney
 Team Treehouse: JavaScript Full Stack Techdegree
 Project 3: Interactive Form
 **************************************/
 
 let costs = 0;
+let no_error_messages = true;
 
 // initially hidden
 $other_job_role = $('input#other-title');
@@ -245,7 +246,7 @@ function checkbox_isChecked(cost, array) {
          }
       }
    });
-} // end of entire function
+}
 
 
 function checkbox_unChecked(cost, array) {
@@ -411,7 +412,32 @@ function display_or_remove_error_message(parameter_name) {
    }
 
 }
+/*
+The point of this method is to check if there are any error messages
+still displayed on the page. If there are no error messages, the form will
+submit when the user clicks the Register button.
+*/
+function any_error_messages() {
+   let error_list = [];
 
+   $('span.error_msg_one, span.error_msg_two').each(function() {
+      if ($(this).text().length > 0) {
+         error_list.push(false);
+      } else {
+         error_list.push(true);
+      }
+   });
+
+   for (let i = 0; i < error_list.length; i++) {
+      if (error_list[i] === false) {
+         no_error_messages = false;
+         return;
+      } else {
+         no_error_messages = true;
+      }
+   }
+
+}
 
 /*
 When the user clicks the "Register" button
@@ -440,6 +466,13 @@ $('button[type="submit"]').on("click", function(e) {
    let inputs = ['mail', 'cc-num', 'zip', 'cvv'];
    for (let i = 0; i < inputs.length; i++) {
       display_or_remove_error_message(inputs[i]);
+      if (i === inputs.length-1) {
+         any_error_messages();
+      }
+   }
+
+   // Form will not submit, if there are any error messages still on the page.
+   if (no_error_messages === false) {
       e.preventDefault();
    }
 
